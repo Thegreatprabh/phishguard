@@ -11,6 +11,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.prompt import Prompt
 from rich.text import Text
 
+from .brand_lookup import lookup_brand
 from .models import ScanResult
 from .scanner import scan_html, scan_text, scan_url
 
@@ -113,19 +114,39 @@ def show_results(result: ScanResult | list[ScanResult]) -> None:
         show_result(item)
 
 
+def show_brand(info) -> None:
+    body = Text()
+    if info.description:
+        body.append(f"{info.description}\n\n", style="italic bright_white")
+    body.append(info.summary.strip() + "\n\n")
+    body.append("Source  ", style="bold")
+    body.append(info.url, style="underline blue")
+
+    console.print(
+        Panel(
+            body,
+            title=Text(f" \U0001F3E2  {info.title} ", style="bold white on blue"),
+            border_style="blue",
+            box=box.DOUBLE,
+            padding=(1, 2),
+        )
+    )
+
+
 def main_menu() -> str:
     console.print(
         Panel(
             "[bold cyan]1[/]  Scan a URL\n"
             "[bold cyan]2[/]  Scan Text / Message\n"
             "[bold cyan]3[/]  Scan a Local HTML File\n"
-            "[bold cyan]4[/]  Exit",
+            "[bold cyan]4[/]  Brand / Company Lookup\n"
+            "[bold cyan]5[/]  Exit",
             title="[bold]Main Menu[/]",
             border_style="bright_blue",
             box=box.ROUNDED,
         )
     )
-    return Prompt.ask("[bold green]Select an option[/]", choices=["1", "2", "3", "4"], default="1")
+    return Prompt.ask("[bold green]Select an option[/]", choices=["1", "2", "3", "4", "5"], default="1")
 
 
 def run_interactive() -> int:
@@ -156,6 +177,18 @@ def run_interactive() -> int:
                 continue
             scanning_animation("Analyzing HTML")
             show_results(scan_html(html))
+
+        elif choice == "4":
+            name = Prompt.ask("[bold]Enter company / brand name[/]").strip()
+            if not name:
+                continue
+            scanning_animation("Looking up brand")
+            try:
+                info = lookup_brand(name)
+            except Exception as exc:
+                console.print(f"[bold red]Lookup failed:[/] {exc}")
+                continue
+            show_brand(info)
 
         else:
             console.print(Align.center(Text("Stay safe. Goodbye!\n", style="bold cyan")))

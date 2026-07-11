@@ -5,6 +5,7 @@ setup.cfg
 setup.py
 phishguard/__init__.py
 phishguard/__main__.py
+phishguard/brand_lookup.py
 phishguard/brands.py
 phishguard/cli.py
 phishguard/github.py
