@@ -110,7 +110,7 @@ git clone https://github.com/Thegreatprabh/phishguard.git
 cd phishguard
 python3 -m pip install .
 phishguard --help
-```
+phishguard
 
 Development mode:
 
@@ -128,7 +128,7 @@ git clone https://github.com/Thegreatprabh/phishguard.git
 cd phishguard
 python -m pip install .
 phishguard --help
-```
+phishguard
 
 Development mode:
 
