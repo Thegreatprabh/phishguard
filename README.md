@@ -1,8 +1,28 @@
-PhishGuard
+<p align="center">
+  <img src="assets/phishguard-banner.svg" alt="PhishGuard threat intelligence banner" width="100%">
+</p>
+
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.9%2B-2b6cb0?style=for-the-badge&logo=python&logoColor=white">
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Kali%20%7C%20Termux-0f172a?style=for-the-badge">
+  <img alt="Mode" src="https://img.shields.io/badge/mode-defensive-16a34a?style=for-the-badge">
+  <img alt="Risk Engine" src="https://img.shields.io/badge/risk%20engine-dangerous%20signals-dc2626?style=for-the-badge">
+</p>
+
+# PhishGuard
 
 PhishGuard is a lightweight phishing detection toolkit for suspicious URLs, fake social media login pages, GitHub links, brand claims, and company legitimacy checks. It is built for Kali Linux, Termux, GitHub Actions, and regular Python 3.9+ environments with no mandatory third-party dependencies.
 
-> Defensive security tool for learning, awareness, and safer link review.
+> Defensive security tool for learning, awareness, safer link review, and brand legitimacy checks.
+
+```text
++-- PhishGuard Threat Console ------------------------------------------+
+| URL risk engine        : typosquats, punycode, shorteners, bait words |
+| Fake login detector    : password forms, OTP traps, brand spoofing    |
+| Company lookup         : founder, parent company, domain, legitimacy  |
+| CI defense             : scan GitHub issues, PRs, comments, docs      |
++-----------------------------------------------------------------------+
+```
 
 ## GitHub Repository Description
 
@@ -40,6 +60,16 @@ This tool is useful for:
 - JSON output for automation, scripts, and CI.
 - GitHub Action workflow included.
 - Works without API keys or paid threat-intelligence services.
+
+## Detection Matrix
+
+| Module | What It Catches | Output |
+| --- | --- | --- |
+| URL Scanner | shorteners, suspicious TLDs, punycode, lookalike domains, bait words | `safe`, `suspicious`, `dangerous` |
+| Fake Login Detector | cloned social login pages, password forms, OTP/recovery-code traps | brand + evidence |
+| Brand Impersonation | trusted brand text on untrusted domains | spoofing warnings |
+| Company Lookup | founder, parent company, official domain, revenue info when available | legitimacy notes |
+| GitHub Defense | suspicious links in issues, PRs, docs, comments | CI fail-on-dangerous mode |
 
 ## Risk Levels
 
@@ -124,7 +154,7 @@ phishguard scan-url "https://example-login-security.com/instagram/verify"
 Scan a fake-looking GitHub login link:
 
 ```bash
-phishguard scan-url "https://github-login-security.xyz/verify"
+phishguard scan-url "https://github-login-security.example/verify"
 ```
 
 Scan a local HTML page:
@@ -160,11 +190,11 @@ phishguard scan-url "https://example.com/login" --fetch
 ## Example Output
 
 ```text
-DANGEROUS  score= 75 kind=url target=https://github-login-security.xyz/verify
+DANGEROUS  score= 75 kind=url target=https://github-login-security.example/verify
   category=brand_impersonation brand=GitHub
   +10 risky_tld: Domain uses .xyz TLD often abused in phishing.
   +12 bait_keywords: URL contains phishing bait words: login, security, verify.
-  +35 brand_on_untrusted_domain: GitHub terms found on non-official domain github-login-security.xyz.
+  +35 brand_on_untrusted_domain: GitHub terms found on non-official domain github-login-security.example.
   +18 brand_bait_combo: GitHub impersonation appears with login or verification bait.
 ```
 
