@@ -1,6 +1,6 @@
-# PhishGuard
+PhishGuard
 
-PhishGuard is a lightweight phishing detection toolkit for suspicious URLs, fake social media login pages, GitHub links, and text messages. It is built for Kali Linux, Termux, GitHub Actions, and regular Python 3.9+ environments with no mandatory third-party dependencies.
+PhishGuard is a lightweight phishing detection toolkit for suspicious URLs, fake social media login pages, GitHub links, brand claims, and company legitimacy checks. It is built for Kali Linux, Termux, GitHub Actions, and regular Python 3.9+ environments with no mandatory third-party dependencies.
 
 > Defensive security tool for learning, awareness, and safer link review.
 
@@ -9,24 +9,25 @@ PhishGuard is a lightweight phishing detection toolkit for suspicious URLs, fake
 Use this as the short GitHub repo description:
 
 ```text
-PhishGuard - a lightweight CLI tool to detect phishing URLs, fake social login pages, and suspicious GitHub/social engineering links.
+PhishGuard - phishing URL, fake login page, and company/brand legitimacy lookup tool for Kali, Termux, and GitHub security workflows.
 ```
 
 Suggested GitHub topics:
 
 ```text
-phishing cybersecurity osint termux kali-linux github-actions python security-tools url-scanner
+phishing cybersecurity osint termux kali-linux github-actions python security-tools url-scanner brand-lookup company-lookup fake-login-detector
 ```
 
 ## What To Say About This Project
 
-PhishGuard helps users quickly check whether a link, message, or HTML page looks suspicious before opening it or trusting it. It detects common phishing signals like fake Instagram/Facebook/GitHub login pages, lookalike domains, password/OTP collection forms, suspicious TLDs, short links, punycode domains, and social engineering bait such as account verification or security alerts.
+PhishGuard helps users quickly check whether a link, message, HTML page, or company claim looks suspicious before opening it or trusting it. It detects common phishing signals like fake social login pages, lookalike domains, password/OTP collection forms, suspicious TLDs, short links, punycode domains, and social engineering bait such as account verification or security alerts.
 
 This tool is useful for:
 
 - Students learning cybersecurity and phishing detection.
 - Kali and Termux users who want a simple command-line scanner.
 - Developers who want a GitHub Action to catch suspicious links in issues, PRs, docs, or comments.
+- Analysts who want company/brand lookup details such as founder, parent company, official domain, revenue info when available, and legitimacy notes.
 - Anyone who wants an offline first phishing risk score with clear evidence.
 
 ## Features
@@ -35,6 +36,7 @@ This tool is useful for:
 - Fake social media login page detection for Instagram, Facebook, Google, GitHub, X/Twitter, LinkedIn, Microsoft, and Discord.
 - HTML form analysis for password fields, OTP/token collection, suspicious form actions, hidden inputs, obfuscated scripts, and brand impersonation.
 - Text scanning for GitHub PRs, issues, markdown, code comments, chat exports, and email-like content.
+- Company and brand lookup for official domain checks, founder details, parent company, revenue information when available, and legitimacy signals.
 - JSON output for automation, scripts, and CI.
 - GitHub Action workflow included.
 - Works without API keys or paid threat-intelligence services.
@@ -45,12 +47,36 @@ This tool is useful for:
 - `suspicious`: warning signs found; review before trusting.
 - `dangerous`: strong evidence of phishing, fake login, or brand impersonation.
 
+## Company / Brand Lookup
+
+PhishGuard can look up company and brand information to help verify whether a website, message, or business claim looks legitimate.
+
+It can show:
+
+- official company or brand name
+- founder information
+- parent company
+- official website or domain
+- industry or category
+- revenue information when publicly available
+- legitimacy status and risk notes
+- mismatch warnings when a suspicious page claims to represent a known brand
+
+Examples:
+
+```bash
+phishguard company "Instagram"
+phishguard company-domain "instagram.com"
+```
+
+This helps detect fake brand pages, scam stores, fake support pages, investment scams, and phishing pages pretending to be real companies.
+
 ## Install On Kali Linux
 
 ```bash
 sudo apt update
 sudo apt install python3 python3-pip git
-git clone https://github.com/thegreatprabh/phishguard.git
+git clone https://github.com/Thegreatprabh/phishguard.git
 cd phishguard
 python3 -m pip install .
 phishguard --help
@@ -68,7 +94,7 @@ python3 -m unittest discover -v
 ```bash
 pkg update && pkg upgrade
 pkg install python git
-git clone https://github.com/thegreatprabh/phishguard.git
+git clone https://github.com/Thegreatprabh/phishguard.git
 cd phishguard
 python -m pip install .
 phishguard --help
@@ -155,35 +181,6 @@ The workflow is useful for:
 - issue comments
 - markdown docs
 - pasted links in repository files
-
-## Upload This Project To Your GitHub Profile
-
-If GitHub CLI is installed:
-
-```bash
-git init
-git add .
-git commit -m "Initial PhishGuard release"
-gh repo create phishguard --public --source=. --remote=origin --push \
-  --description "PhishGuard - a lightweight CLI tool to detect phishing URLs, fake social login pages, and suspicious GitHub/social engineering links."
-```
-
-If you do not have GitHub CLI:
-
-1. Create a new public repository named `phishguard` on GitHub.
-2. Copy the repository URL.
-3. Run:
-
-```bash
-git init
-git add .
-git commit -m "Initial PhishGuard release"
-git branch -M main
-git remote add origin https://github.com/thegreatprabh/phishguard.git
-git push -u origin main
-```
-
-This repository uses `thegreatprabh/phishguard` as the public GitHub URL.
 
 ## Project Structure
 
