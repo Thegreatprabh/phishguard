@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+import urllib.parse
 from pathlib import Path
 
 from rich import box
@@ -114,19 +115,44 @@ def show_results(result: ScanResult | list[ScanResult]) -> None:
         show_result(item)
 
 
+def brand_verdict_style(verdict: str) -> tuple[str, str, str]:
+    if verdict == "rejected":
+        return "bold white on red", "red", "\u2716  REJECTED"
+    if verdict == "doubtful":
+        return "bold black on yellow", "yellow", "\u26a0  DOUBTFUL"
+    return "bold white on green", "green", "\u2714  APPROVED"
+
+
 def show_brand(info) -> None:
+    title_style, border, label = brand_verdict_style(info.verdict)
+
     body = Text()
+    body.append(f"{info.verdict_reason}\n\n", style="italic")
+
     if info.description:
         body.append(f"{info.description}\n\n", style="italic bright_white")
-    body.append(info.summary.strip() + "\n\n")
-    body.append("Source  ", style="bold")
-    body.append(info.url, style="underline blue")
+
+    if info.facts:
+        for fact_label, value in info.facts.items():
+            body.append(f"{fact_label:<12} ", style="bold cyan")
+            body.append(f"{value}\n")
+        body.append("\n")
+
+    body.append(info.summary.strip() + "\n")
+
+    if info.url:
+        body.append("\nSource  ", style="bold")
+        body.append(info.url, style="underline blue")
+        body.append("\n\n")
+        query = urllib.parse.quote(info.title)
+        body.append("Salary & reviews (not on Wikipedia): ", style="dim")
+        body.append(f"https://www.ambitionbox.com/search?q={query}", style="underline dim blue")
 
     console.print(
         Panel(
             body,
-            title=Text(f" \U0001F3E2  {info.title} ", style="bold white on blue"),
-            border_style="blue",
+            title=Text(f" {label}  \u2022  {info.title} ", style=title_style),
+            border_style=border,
             box=box.DOUBLE,
             padding=(1, 2),
         )
